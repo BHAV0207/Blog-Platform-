@@ -31,6 +31,7 @@ const BlogPost = sequelize.define('BlogPost', {
   },
 });
 
+
 // Define relationship with User
 User.hasMany(BlogPost, { foreignKey: 'userId', onDelete: 'CASCADE' });
 BlogPost.belongsTo(User, { foreignKey: 'userId' });

@@ -2,7 +2,6 @@ const express = require('express');
 const sequelize = require('./Models/db');
 const User = require('./Models/user');
 const BlogPost = require('./Models/posts');
-const Image = require('./Models/image');
 const Comment = require('./Models/comments');
 
 const app = express();
@@ -10,6 +9,12 @@ app.use(express.json());
 
 const AuthRoute = require('./Routes/Auth');
 app.use('/api/auth' , AuthRoute);
+
+const UserRoute = require('./Routes/User');
+app.use('/api/user', UserRoute);
+
+const BlogRoute = require('./Routes/Blog');
+app.use('/api/blog', BlogRoute);
 
 // Sync models with the database
 (async () => {
