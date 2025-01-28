@@ -1,12 +1,15 @@
 const express = require('express');
-const sequelize = require('./models/db');
-// const User = require('./models/user');
-// const BlogPost = require('./models/posts');
-// const Comment = require('./models/comments');
-// const Image = require('./models/Image');
+const sequelize = require('./Models/db');
+const User = require('./Models/user');
+const BlogPost = require('./Models/posts');
+const Image = require('./Models/image');
+const Comment = require('./Models/comments');
 
 const app = express();
 app.use(express.json());
+
+const AuthRoute = require('./Routes/Auth');
+app.use('/api/auth' , AuthRoute);
 
 // Sync models with the database
 (async () => {
