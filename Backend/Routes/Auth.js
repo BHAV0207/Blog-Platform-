@@ -12,6 +12,8 @@ const loginLimiter = rateLimit({
   message: "Too many login attempts, please try again later",
 });
 
+
+// REGISTER A USER
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -42,6 +44,8 @@ router.post("/register", async (req, res) => {
 });
 
 
+
+// LOGIN A USER
 router.post("/login",loginLimiter , async (req, res) => {
 
   try {
