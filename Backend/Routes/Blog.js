@@ -4,21 +4,85 @@ const express = require("express");
 const router = express.Router();
 const BlogPost = require("../Models/posts");
 const User = require("../Models/user");
+const rateLimit = require("express-rate-limit");
+
+const postLimiter = rateLimit({
+  windowMs : 15 *60 *1000,
+  max : 15,
+  message : "Too many requests, please try again later"
+})
 
 router.get("/", async (req, res) => {
   try {
-    const posts = await BlogPost.findAll({
+    let { page, limit } = req.query;
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 10;
+
+    const offset = (page - 1) * limit;
+
+    const posts = await BlogPost.findAndCountAll({
       include: [{ model: User, attributes: ["id", "name", "email"] }],
+      limit,
+      offset,
+      order: [["createdAt", "DESC"]],
     });
 
-    res.json(posts);
+    const totalRecords = posts.count;
+    const post = posts.rows;
+
+    const totalPages = Math.ceil(totalRecords / limit);
+
+    res.json({
+      totalRecords,
+      totalPages,
+      currentPage: page,
+      pageSize: limit,
+      post,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server Error" });
   }
 });
 
-router.post("/create", async (req, res) => {
+router.get("/:userId", async (req, res) => {
+  try {
+    let { page, limit } = req.query;
+    let { userId } = req.params;
+
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 10;
+
+    const offset = (page - 1) * limit;
+
+    const posts = await BlogPost.findAndCountAll({
+      where: { userId },
+      include: [{ model: User, attributes: ["id", "name", "email"] }],
+      limit,
+      offset,
+      order: [["createdAt", "DESC"]],
+    });
+
+    const totalRecords = posts.count;
+    const post = posts.rows;
+
+    const totalPages = Math.ceil(totalRecords / limit);
+
+    res.json({
+      totalRecords,
+      totalPages,
+      currentPage: page,
+      pageSize: limit,
+      post,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
+
+router.post("/create",postLimiter,  async (req, res) => {
   try {
     const { title, content, userId, imageUrls } = req.body;
 
@@ -42,6 +106,7 @@ router.post("/create", async (req, res) => {
   }
 });
 
+
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -59,6 +124,7 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 });
+
 
 router.put("/:id", authenticate, async (req, res) => {
   try {
@@ -81,6 +147,7 @@ router.put("/:id", authenticate, async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 });
+
 
 router.delete("/:id", authenticate, async (req, res) => {
   try {
