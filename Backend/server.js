@@ -20,6 +20,9 @@ app.use("/api/user", UserRoute);
 const BlogRoute = require("./Routes/Blog");
 app.use("/api/blog", BlogRoute);
 
+const CommentRoute = require("./Routes/comment");
+app.use("/api/comment", CommentRoute);
+
 // Sync models with the database
 (async () => {
   try {

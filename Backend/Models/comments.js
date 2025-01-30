@@ -27,7 +27,7 @@ const Comment = sequelize.define('Comment', {
 User.hasMany(Comment, { foreignKey: 'userId', onDelete: 'CASCADE' });
 Comment.belongsTo(User, { foreignKey: 'userId' });
 
-BlogPost.hasMany(Comment, { foreignKey: 'blogPostId', onDelete: 'CASCADE' });
-Comment.belongsTo(BlogPost, { foreignKey: 'blogPostId' });
+BlogPost.hasMany(Comment, { foreignKey: 'postId', onDelete: 'CASCADE' });
+Comment.belongsTo(BlogPost, { foreignKey: 'postId' });
 
 module.exports = Comment;

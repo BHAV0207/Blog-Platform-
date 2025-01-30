@@ -7,14 +7,16 @@ const User = require("../Models/user");
 const rateLimit = require("express-rate-limit");
 const multer = require("multer");
 const path = require("path");
+const redis = require("../utils/redisclient");
 
+// RATE LIMITER
 const postLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 15,
   message: "Too many requests, please try again later",
 });
 
-// Configure multer storage
+// MULTER CONFIGURATION
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, "../uploads/")); // Ensure this path exists
@@ -24,7 +26,6 @@ const storage = multer.diskStorage({
   },
 });
 
-// File filter to accept only images
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image/")) {
     cb(null, true);
@@ -33,16 +34,28 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Initialize multer with storage and file filter
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
   limits: { fileSize: 1024 * 1024 * 10 }, // Limit file size to 10MB
 });
 
+// REDIS CLIENT
+function getCacheKey(key, value) {
+  {
+    return value ? "blog:" + key + ":" + value : "blog:" + key;
+  }
+}
+
 // GET ALL BLOG POSTS
 router.get("/", async (req, res) => {
   try {
+    const cacheKey = "posts:all";
+    const cachedPosts = await redis.get(cacheKey);
+    if (cachedPosts) {
+      return res.json(JSON.parse(cachedPosts));
+    }
+
     let { page, limit } = req.query;
     page = parseInt(page) || 1;
     limit = parseInt(limit) || 10;
@@ -58,15 +71,27 @@ router.get("/", async (req, res) => {
 
     const totalRecords = posts.count;
     const post = posts.rows;
-
     const totalPages = Math.ceil(totalRecords / limit);
 
-    res.json({
+    const responseData = {
       totalRecords,
       totalPages,
       currentPage: page,
       pageSize: limit,
       post,
+    };
+
+    await redis.set(
+      cacheKey,
+      JSON.stringify({
+        responseData,
+      }),
+      "EX",
+      300
+    );
+
+    res.json({
+      responseData,
     });
   } catch (err) {
     console.error(err);
@@ -77,6 +102,13 @@ router.get("/", async (req, res) => {
 // GET ALL BLOG POSTS BY USER
 router.get("/:userId", async (req, res) => {
   try {
+
+    const cacheKey = getCacheKey("posts", req.params.userId);
+    const cachedPosts = await redis.get(cacheKey);
+    if (cachedPosts) {
+      return res.json(JSON.parse(cachedPosts));
+    }
+
     let { page, limit } = req.query;
     let { userId } = req.params;
 
@@ -95,15 +127,27 @@ router.get("/:userId", async (req, res) => {
 
     const totalRecords = posts.count;
     const post = posts.rows;
-
     const totalPages = Math.ceil(totalRecords / limit);
 
-    res.json({
+    const responseData = {
       totalRecords,
       totalPages,
       currentPage: page,
       pageSize: limit,
       post,
+    };
+
+    await redis.set(
+      cacheKey,
+      JSON.stringify({
+        responseData,
+      }),
+      "EX",
+      300
+    );
+
+    res.json({
+      responseData,
     });
   } catch (err) {
     console.error(err);
@@ -139,6 +183,9 @@ router.post(
         userId,
         imageUrls,
       });
+
+      await redis.del("posts:all");
+      await redis.del(getCacheKey("posts", userId));
 
       res.status(201).json({
         message: "Blog post created successfully.",
@@ -217,6 +264,9 @@ router.put("/:id", authenticate, async (req, res) => {
     post.content = content;
     await post.save();
 
+    await redis.del("posts:all");
+    await redis.del(getCacheKey("posts", post.userId));
+
     res.json({ message: "Post updated successfully", post });
   } catch (err) {
     console.error(err);
@@ -234,6 +284,10 @@ router.delete("/:id", authenticate, async (req, res) => {
     }
 
     await post.destroy();
+
+    await redis.del("posts:all");
+    await redis.del(getCacheKey("posts", post.userId));
+    
     res.json({ message: "Post deleted successfully" });
   } catch (err) {
     console.error(err);
