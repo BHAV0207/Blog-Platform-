@@ -1,7 +1,7 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('./db');
+const { DataTypes } = require("sequelize");
+const sequelize = require("./dataBase");
 
-const User = sequelize.define('User', {
+const User = sequelize.define("User", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,

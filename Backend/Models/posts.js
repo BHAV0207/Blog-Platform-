@@ -1,8 +1,8 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('./db');
-const User = require('./user');
+const { DataTypes } = require("sequelize");
+const sequelize = require("./dataBase");
+const User = require("./user");
 
-const BlogPost = sequelize.define('BlogPost', {
+const BlogPost = sequelize.define("BlogPost", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -17,7 +17,7 @@ const BlogPost = sequelize.define('BlogPost', {
     allowNull: false,
   },
   imageUrls: {
-    type: DataTypes.JSON, 
+    type: DataTypes.JSON,
     allowNull: true,
     defaultValue: [],
   },
@@ -31,9 +31,8 @@ const BlogPost = sequelize.define('BlogPost', {
   },
 });
 
-
 // Define relationship with User
-User.hasMany(BlogPost, { foreignKey: 'userId', onDelete: 'CASCADE' });
-BlogPost.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(BlogPost, { foreignKey: "userId", onDelete: "CASCADE" });
+BlogPost.belongsTo(User, { foreignKey: "userId" });
 
 module.exports = BlogPost;

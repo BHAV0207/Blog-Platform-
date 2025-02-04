@@ -12,6 +12,7 @@ const commentPostLimiter = rateLimit({
   message: "Too many requests, please try again later",
 });
 
+
 // GET ALL COMMENTS ON A POST
 router.get("/:postId", async (req, res) => {
   let { postId } = req.params;
@@ -41,6 +42,7 @@ router.get("/:postId", async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 });
+
 
 // POST A COMMENT ON A POST
 router.post("/:postId", commentPostLimiter, async (req, res) => {
@@ -114,6 +116,7 @@ router.get("/user/:userId" , async (req, res) => {
     res.status(500).json({message: "Server Error"});
   }
 })
+
 
 // DELETE A COMMENT
 router.delete("/:commentId", async (req, res) => {
