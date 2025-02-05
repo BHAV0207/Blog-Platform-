@@ -4,8 +4,13 @@ const User = require("./Models/user");
 const BlogPost = require("./Models/posts");
 const Comment = require("./Models/comments");
 const path = require("path");
+const cors = require('cors')
 
 const app = express();
+
+app.use(cors({
+  origin: ["http://localhost:5173"]
+}));
 app.use(express.json());
 
 // Serve static files from the uploads directory
