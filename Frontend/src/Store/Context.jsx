@@ -34,6 +34,7 @@ export const ModalProvider = ({ children }) => {
       setName("");
       setEmail("");
       setPassword("");
+      modalTrigger();
     } catch (error) {
       setErr("Registration failed. Please try again.");
       setSuccess("");
@@ -50,7 +51,7 @@ export const ModalProvider = ({ children }) => {
       setErr("");
       setEmail("");
       setPassword("");
-
+      modalTrigger();
       const token = res.data.token;
       localStorage.setItem("token", token);
 
@@ -79,6 +80,7 @@ export const ModalProvider = ({ children }) => {
         setEmail,
         setPassword,
         axiosRequest,
+        setSuccess,
         success,
         err,
         axiosLogin,

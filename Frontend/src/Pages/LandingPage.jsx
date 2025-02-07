@@ -103,11 +103,12 @@ function LandingPage() {
         </Slider>
       </div>
 
-      
+      {/* Authentication Forms */}
       <div className="absolute bottom-10">
         {auth === "login" ? <Login /> : <Register />}
       </div>
 
+      {/* Footer */}
       <footer className="bg-gray-800 text-white p-4 text-center">
         <p>&copy; {new Date().getFullYear()} BlogMania. All rights reserved.</p>
       </footer>

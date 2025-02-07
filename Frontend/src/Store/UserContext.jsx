@@ -5,8 +5,15 @@ import {jwtDecode} from 'jwt-decode';
 
 export const UserContext = createContext();
 
+
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+
+  const HandleLogout = () => {
+    localStorage.removeItem('token');
+
+    setUser(null);
+  }
 
   const getUser = async () => {
     try{
@@ -24,7 +31,7 @@ export const UserProvider = ({ children }) => {
   }
 
   return (
-    <UserContext.Provider value={{user , getUser}}>
+    <UserContext.Provider value={{user , getUser , HandleLogout}}>
       {children}
     </UserContext.Provider>
   );

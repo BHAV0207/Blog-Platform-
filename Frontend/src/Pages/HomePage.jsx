@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import Header from "../Components/Header";
 import { UserContext } from "../Store/UserContext";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import HomePageHeader from "../Components/HomePageHeader";
 
 function HomePage() {
   const { user, getUser } = useContext(UserContext);
@@ -12,7 +12,6 @@ function HomePage() {
   useEffect(() => {
     getUser();
     fetchPosts();
-    fetchComments();
   }, []);
 
   const fetchPosts = async () => {
@@ -23,22 +22,9 @@ function HomePage() {
       console.error(err);
     }
   };
-
-  const fetchComments = async (postId) => {
-    try {
-      const res = await axios.get(
-        `http://localhost:3000/api/comments/${postId}`
-      );
-      setComments(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col">
-      <Header />
-     
+      <HomePageHeader user={user}></HomePageHeader>
       <div className="p-6">
         <h2 className="text-3xl font-bold text-center mb-6">
           Featured Articles
@@ -61,12 +47,6 @@ function HomePage() {
               >
                 Read More
               </Link>
-              <button
-                onClick={() => fetchComments(post.id)}
-                className="text-gray-500 mt-2 inline-block"
-              >
-                View Comments
-              </button>
             </div>
           ))}
         </div>
