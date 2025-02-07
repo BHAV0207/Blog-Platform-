@@ -15,16 +15,13 @@ function LandingPage() {
 
   const carouselData = JSON.parse(localStorage.getItem("blogPosts")) || [];
 
-  // Function to get three random items from the carousel data
   const getRandomItems = (data, count) => {
     const shuffled = data.sort(() => 0.5 - Math.random());
     return shuffled.slice(0, count);
   };
 
-  // Get three random items for the carousel
   const selectedItems = getRandomItems(carouselData, 3);
 
-  // Carousel settings
   const settings = {
     dots: true,
     infinite: true,
@@ -45,7 +42,7 @@ function LandingPage() {
         >
           {selectedItems.map((item) => (
             <div
-              className="p-6 transition-transform transform hover:scale-105 bg-white rounded-lg shadow-md flex flex-col items-center text-center overflow-hidden p-6"
+              className="p-6 transition-transform transform hover:scale-105 bg-white rounded-lg shadow-md flex flex-col items-center text-center overflow-hidden "
               key={item.id}
             >
               <img
@@ -56,7 +53,7 @@ function LandingPage() {
               <h3 className="text-3xl font-extrabold text-gray-900 mt-2">
                 {item.title}
               </h3>
-              <p className="text-gray-700 text-lg font-medium max-w-2xl">
+              <p className="text-gray-700 text-lg font-bold max-w-2xl">
                 {item.description}
               </p>
             </div>

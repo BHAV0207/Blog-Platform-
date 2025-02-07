@@ -8,6 +8,22 @@ require("dotenv").config();
 const redis = require("../utils/redisclient");
 
 
+
+// GET USER BY ID 
+router.get('/:id' , async(req ,res) => {
+  try{
+    const {id} = req.params;
+    const user = await User.findByPk(id);
+    if(!user){
+      return res.status(404).json({message: "User not found"})
+    }
+    res.json(user);
+  }catch(err){
+    console.error(err);
+    res.status(500).json({message: "Server Error"})
+  }
+})
+
 //GET ALL USERS
 router.get("/", async (req, res) => {
   try {

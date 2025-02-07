@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
+import { UserContext } from '../Store/UserContext';
 
 function HomePage() {
+
+  const {user , getUser} = useContext(UserContext);
+
+  useEffect(() => {
+    getUser();
+  }, [])
+
   return (
-    <div>HomePage</div>
+    <div>
+      home
+    </div>
   )
 }
 
