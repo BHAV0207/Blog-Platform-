@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Header from "../Components/Header";
+import { ModalContext } from "../Store/Context";
+import Login from "../Components/Login";
+import Register from "../Components/Register";
 
 function FeaturedArticles() {
+  const { auth } = useContext(ModalContext);
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -50,6 +54,13 @@ function FeaturedArticles() {
           ))}
         </div>
       </div>
+      <div className="absolute bottom-10">
+        {auth === "login" ? <Login /> : <Register />}
+      </div>
+
+      <footer className="bg-gray-800 text-white p-4 text-center">
+        <p>&copy; {new Date().getFullYear()} BlogMania. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
