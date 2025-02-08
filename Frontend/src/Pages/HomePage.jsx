@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../Store/UserContext";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import HomePageHeader from "../Components/HomePageHeader";
 import {
@@ -10,29 +9,16 @@ import {
   FiFileText,
   FiMessageSquare,
 } from "react-icons/fi";
+import ProfilePage from "../Components/ProfilePage";
+import FeedPage from "../Components/FeedPage";
+import UserPosts from "../Components/UserPosts";
+import CommentPage from "../Components/CommentPage";
 
 function HomePage() {
-  const { user, getUser } = useContext(UserContext);
-  const [posts, setPosts] = useState([]);
-  const [comments, setComments] = useState([]);
+  const { user } = useContext(UserContext);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("profile");
+  const [activeSection, setActiveSection] = useState("feed");
 
-  useEffect(() => {
-    getUser();
-    fetchPosts();
-  }, []);
-
-  const fetchPosts = async () => {
-    try {
-      const res = await axios.get("http://localhost:3000/api/blog");
-      setPosts(res.data.responseData.post);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  // ✅ Close sidebar when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -50,12 +36,8 @@ function HomePage() {
 
   return (
     <div className=" min-h-screen flex flex-col">
-      {/* ✅ Home Page Header (Unchanged) */}
-      
-        <HomePageHeader user={user} />
-      
-      
-      {/* ✅ Hamburger Button (Below Header) */}
+      <HomePageHeader user={user} />
+
       <div className="p-4 bg-white border-gray-300 flex items-center">
         <button
           onClick={() => setMenuOpen(true)}
@@ -81,6 +63,18 @@ function HomePage() {
           <h2 className="text-2xl font-bold text-gray-800 mb-6">Menu</h2>
 
           {/* Sidebar Options */}
+
+          <button
+            className={`flex items-center text-lg p-3 rounded-lg ${
+              activeSection === "feed"
+                ? "bg-blue-500 text-white"
+                : "text-gray-700"
+            }`}
+            onClick={() => setActiveSection("feed")}
+          >
+            <FiFileText className="mr-3" /> My Feed
+          </button>
+
           <button
             className={`flex items-center text-lg p-3 rounded-lg ${
               activeSection === "profile"
@@ -91,6 +85,7 @@ function HomePage() {
           >
             <FiUser className="mr-3" /> My Profile
           </button>
+
           <button
             className={`flex items-center text-lg p-3 rounded-lg ${
               activeSection === "posts"
@@ -101,6 +96,7 @@ function HomePage() {
           >
             <FiFileText className="mr-3" /> My Posts
           </button>
+
           <button
             className={`flex items-center text-lg p-3 rounded-lg ${
               activeSection === "comments"
@@ -114,74 +110,16 @@ function HomePage() {
         </div>
       </div>
 
-      {/* ✅ Main Content Area */}
+      {/* ✅ Main Content */}
+
       <div className="flex-grow p-6">
-        {/* 🔹 Active Section Content */}
-        {activeSection === "profile" && (
-          <div>
-            <h2 className="text-3xl font-bold text-center mb-6">
-              User Profile
-            </h2>
-            {user ? (
-              <div className="bg-white rounded-lg shadow-md p-4">
-                <h3 className="text-xl font-semibold">{user.name}</h3>
-                <p className="text-gray-600">{user.email}</p>
-              </div>
-            ) : (
-              <p className="text-gray-600">
-                Please log in to see your profile.
-              </p>
-            )}
-          </div>
-        )}
+        {activeSection === "profile" && <ProfilePage />}
 
-        {activeSection === "posts" && (
-          <div>
-            <h2 className="text-3xl font-bold text-center mb-6">My Posts</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {posts.map((post) => (
-                <div
-                  className="bg-white rounded-lg shadow-md p-4"
-                  key={post.id}
-                >
-                  <img
-                    src={post.imageUrls[0] || "https://via.placeholder.com/300"}
-                    alt={post.title}
-                    className="w-full h-48 object-cover rounded-t-lg"
-                  />
-                  <h3 className="text-xl font-semibold mt-2">{post.title}</h3>
-                  <p className="text-gray-600 mt-1">
-                    {post.content.substring(0, 100)}...
-                  </p>
-                  <Link
-                    to={`/article/${post.id}`}
-                    className="text-blue-600 mt-2 inline-block"
-                  >
-                    Read More
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        {activeSection === "feed" && <FeedPage />}
 
-        {activeSection === "comments" && (
-          <div>
-            <h2 className="text-3xl font-bold text-center mb-6">My Comments</h2>
-            <div className="bg-white rounded-lg shadow-md p-4">
-              {comments.length > 0 ? (
-                comments.map((comment) => (
-                  <div key={comment.id} className="border-b py-2">
-                    <p className="font-semibold">{comment.User.name}: </p>
-                    <p className="text-gray-600">{comment.content}</p>
-                  </div>
-                ))
-              ) : (
-                <p className="text-gray-600">No comments available.</p>
-              )}
-            </div>
-          </div>
-        )}
+        {activeSection === "posts" && <UserPosts></UserPosts>}
+
+        {activeSection === "comments" && <CommentPage></CommentPage>}
       </div>
     </div>
   );

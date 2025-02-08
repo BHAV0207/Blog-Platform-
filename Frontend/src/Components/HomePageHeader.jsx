@@ -23,9 +23,7 @@ function HomePageHeader({ user }) {
 
   return (
     <div className="bg-cream-100 text-gray-800 p-4 flex justify-between items-center shadow-md border-b-2 border-gray-300">
-      <Link to={"/"}>
         <h1 className="text-3xl font-extrabold">BlogMania</h1>
-      </Link>
       <div className="relative flex space-x-4">
         <span className="text-lg font-medium mt-1.5 text-gray-700">
           {" "}
