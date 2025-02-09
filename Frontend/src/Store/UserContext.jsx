@@ -98,7 +98,7 @@ export const UserProvider = ({ children }) => {
       const res = await axios.get(
         `http://localhost:3000/api/comment/user/${decode.id}`
       );
-      setUserComments(res.data.responseData.post);
+      setUserComments(res.data);
     } catch (err) {
       console.error(err);
     }
@@ -136,6 +136,24 @@ export const UserProvider = ({ children }) => {
     }catch(err){
       console.log(err);
       return [];
+    }
+  }
+
+
+  const updateComment = async (id , data) => {
+    try{
+      const token = localStorage.getItem('token');
+      if(!token){
+        return;
+      }
+
+      await axios.put(`http://localhost:3000/api/comment/${id}` , data , {
+        headers: {Authorization: `Bearer ${token}`}
+      })
+
+      console.log("Comment updated successfully");
+    }catch(err){
+      console.log(err);
     }
   }
 

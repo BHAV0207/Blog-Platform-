@@ -95,19 +95,16 @@ router.get("/user/:userId" , async (req, res) => {
     if(cachedComments){
       return res.json(JSON.parse(cachedComments));
     }
-    console.log("User ID : " , userId);
     const userExists = await User.findByPk(userId);
     if(!userExists){
       return res.status(404).json({message: "User not found"});
     }
-    console.log("User Exists");
     const comments = await Comment.findAll({
       where : {userId},
       include: [
         { model: BlogPost, attributes: ["id", "title"] },
       ]
     })
-    console.log("Comments : " , comments);
 
     await redis.set(cacheKey , JSON.stringify(comments) , "EX" , 300);
     res.json(comments);

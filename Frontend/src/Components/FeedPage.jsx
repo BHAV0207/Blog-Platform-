@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../Store/UserContext";
 import { Link } from "react-router-dom";
 import { FiMessageSquare } from "react-icons/fi"; // ✅ Import comment icon
-import CommentPage from "./CommentPage";
+import CommentModal from "./CommentModal";
 
 function FeedPage() {
   const { allPosts, getAllPosts } = useContext(UserContext);
@@ -17,7 +17,10 @@ function FeedPage() {
       <h2 className="text-3xl font-bold text-center mb-6">Feed</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {allPosts.map((post) => (
-          <div className="bg-white rounded-lg shadow-md p-4 relative" key={post.id}>
+          <div
+            className="bg-white rounded-lg shadow-md p-4 relative"
+            key={post.id}
+          >
             <img
               src={post.imageUrls[0] || "https://via.placeholder.com/300"}
               alt={post.title}
@@ -27,7 +30,10 @@ function FeedPage() {
             <p className="text-gray-600 mt-1">
               {post.content.substring(0, 100)}...
             </p>
-            <Link to={`/article/${post.id}`} className="text-blue-600 mt-2 inline-block">
+            <Link
+              to={`/article/${post.id}`}
+              className="text-blue-600 mt-2 inline-block"
+            >
               Read More
             </Link>
 
@@ -41,7 +47,10 @@ function FeedPage() {
 
             {/* ✅ Comment Modal (opens when clicked) */}
             {activePostId === post.id && (
-              <CommentPage postId={post.id} closeModal={() => setActivePostId(null)} />
+              <CommentModal
+                postId={post.id}
+                closeModal={() => setActivePostId(null)}
+              />
             )}
           </div>
         ))}

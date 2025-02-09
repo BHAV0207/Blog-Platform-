@@ -12,8 +12,8 @@ import {
 import ProfilePage from "../Components/ProfilePage";
 import FeedPage from "../Components/FeedPage";
 import UserPosts from "../Components/UserPosts";
-import CommentPage from "../Components/CommentPage";
 import CreatePost from "../Components/CreatePost"; // ✅ Import Create Post Component
+import CommentPage from "../Components/CommentPage";
 
 function HomePage() {
   const { user } = useContext(UserContext);
@@ -57,7 +57,10 @@ function HomePage() {
         } transition-transform duration-300 ease-in-out z-50 sidebar-menu`}
       >
         <div className="p-6 flex flex-col">
-          <button onClick={() => setMenuOpen(false)} className="self-end text-gray-600">
+          <button
+            onClick={() => setMenuOpen(false)}
+            className="self-end text-gray-600"
+          >
             <FiX size={24} />
           </button>
           <h2 className="text-2xl font-bold text-gray-800 mb-6">Menu</h2>
@@ -65,7 +68,9 @@ function HomePage() {
           {/* Sidebar Options */}
           <button
             className={`flex items-center text-lg p-3 rounded-lg ${
-              activeSection === "feed" ? "bg-blue-500 text-white" : "text-gray-700"
+              activeSection === "feed"
+                ? "bg-blue-500 text-white"
+                : "text-gray-700"
             }`}
             onClick={() => setActiveSection("feed")}
           >
@@ -74,7 +79,9 @@ function HomePage() {
 
           <button
             className={`flex items-center text-lg p-3 rounded-lg ${
-              activeSection === "profile" ? "bg-blue-500 text-white" : "text-gray-700"
+              activeSection === "profile"
+                ? "bg-blue-500 text-white"
+                : "text-gray-700"
             }`}
             onClick={() => setActiveSection("profile")}
           >
@@ -102,7 +109,9 @@ function HomePage() {
               <div className="ml-6 mt-2 flex flex-col space-y-2">
                 <button
                   className={`flex items-center text-lg p-3 rounded-lg ${
-                    activeSection === "posts" ? "bg-gray-300 text-gray-900" : "text-gray-700"
+                    activeSection === "posts"
+                      ? "bg-gray-300 text-gray-900"
+                      : "text-gray-700"
                   }`}
                   onClick={() => setActiveSection("posts")}
                 >
@@ -110,7 +119,9 @@ function HomePage() {
                 </button>
                 <button
                   className={`flex items-center text-lg p-3 rounded-lg ${
-                    activeSection === "createPost" ? "bg-gray-300 text-gray-900" : "text-gray-700"
+                    activeSection === "createPost"
+                      ? "bg-gray-300 text-gray-900"
+                      : "text-gray-700"
                   }`}
                   onClick={() => setActiveSection("createPost")}
                 >
@@ -122,7 +133,9 @@ function HomePage() {
 
           <button
             className={`flex items-center text-lg p-3 rounded-lg ${
-              activeSection === "comments" ? "bg-blue-500 text-white" : "text-gray-700"
+              activeSection === "comments"
+                ? "bg-blue-500 text-white"
+                : "text-gray-700"
             }`}
             onClick={() => setActiveSection("comments")}
           >
@@ -131,12 +144,11 @@ function HomePage() {
         </div>
       </div>
 
-      {/* ✅ Main Content Area */}
       <div className="flex-grow p-6">
         {activeSection === "profile" && <ProfilePage />}
         {activeSection === "feed" && <FeedPage />}
         {activeSection === "posts" && <UserPosts />}
-        {activeSection === "createPost" && <CreatePost />} {/* ✅ New Component */}
+        {activeSection === "createPost" && <CreatePost />}{" "}
         {activeSection === "comments" && <CommentPage />}
       </div>
     </div>
