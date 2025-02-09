@@ -16,15 +16,15 @@ function UpdatePost({ id, onUpdate, closeModal }) {
     const data = { title, content };
 
     try {
-      await UpdatePost(id, data); // ✅ Send correct post ID
+      await UpdatePost(id, data);
       setMessage("Post updated successfully!");
 
       if (onUpdate) {
-        onUpdate(); // 🔄 Refresh posts after update
+        onUpdate(); 
       }
 
       setTimeout(() => {
-        closeModal(); // ✅ Close the modal after update
+        closeModal(); 
       }, 1000);
     } catch (error) {
       setMessage("Failed to update post.");
@@ -36,8 +36,8 @@ function UpdatePost({ id, onUpdate, closeModal }) {
 
   return (
     <div
-      className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50" // ✅ Ensures modal appears in front
-      onClick={closeModal} // ✅ Close modal when clicking outside
+      className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50" 
+      onClick={closeModal} 
     >
       <div
         className="bg-white p-8 rounded-lg shadow-lg w-96 relative z-50" // ✅ Ensures modal content stays above other elements

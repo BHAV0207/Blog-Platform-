@@ -27,7 +27,6 @@ export const UserProvider = ({ children }) => {
         `http://localhost:3000/api/user/${decode.id}`
       );
       setUser(res.data);
-      console.log(res.data);
     } catch (err) {
       console.error(err);
     }
@@ -58,22 +57,6 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const getCommentsById = async (id) => {
-    try {
-      const token = localStorage.getItem("token");
-      const decode = jwtDecode(token);
-      if (!token) {
-        return;
-      }
-      const res = await axios.get(
-        `http://localhost:3000/api/comment/user/${decode.id}`
-      );
-      setUserComments(res.data.responseData.post);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   const UpdatePost = async (id, data) => {
     try {
       const token = localStorage.getItem("token");
@@ -93,7 +76,7 @@ export const UserProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
-
+ 
       await axios.delete(`http://localhost:3000/api/blog/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -101,6 +84,58 @@ export const UserProvider = ({ children }) => {
       console.log("Post deleted successfully!");
     } catch (err) {
       console.error("Error deleting post:", err);
+    }
+  }
+
+
+  const getCommentsByUserId = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const decode = jwtDecode(token);
+      if (!token) {
+        return;
+      }
+      const res = await axios.get(
+        `http://localhost:3000/api/comment/user/${decode.id}`
+      );
+      setUserComments(res.data.responseData.post);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const postCommentOnAPost = async (id , commentContent) => {
+    try{
+      const token = localStorage.getItem('token');
+      const decode = jwtDecode(token);
+      if(!token){
+        return;
+      }
+
+      const res = await axios.post(`http://localhost:3000/api/comment/${id}`, {
+        content : commentContent,
+        userId : decode.id
+      })
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+
+  const fetchCommentsForPost =async (id) => {
+    try{
+      const token = localStorage.getItem('token');
+      if(!token){
+        return [];
+      }
+
+      const res = await axios.get(`http://localhost:3000/api/comment/${id}`)
+      return res.data
+      // console.log(res.data);
+
+    }catch(err){
+      console.log(err);
+      return [];
     }
   }
 
@@ -114,10 +149,12 @@ export const UserProvider = ({ children }) => {
         getAllPosts,
         getPostById,
         postById,
-        getCommentsById,
+        getCommentsByUserId,
         userComments,
         UpdatePost,
-        DeletePost
+        DeletePost,
+        postCommentOnAPost,
+        fetchCommentsForPost,
       }}
     >
       {children}

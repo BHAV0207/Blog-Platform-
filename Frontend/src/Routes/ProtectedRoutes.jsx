@@ -9,7 +9,6 @@ function ProtectedRoutes({ user , element}) {
   if(!token) return <Navigate to={'/'} replace />
   try{
     const decode = jwtDecode(token);
-    console.log(user);
     if(decode.id != user.id){
       return <Navigate to={'/'} replace />
     }
