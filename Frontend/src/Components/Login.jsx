@@ -30,7 +30,7 @@ function Login() {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center"
+      className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex justify-center items-center"
       onClick={modalTrigger}
     >
       <div

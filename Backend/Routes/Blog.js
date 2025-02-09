@@ -47,7 +47,6 @@ function getCacheKey(key, value) {
   }
 }
 
-
 // GET ALL BLOG POSTS
 router.get("/", async (req, res) => {
   try {
@@ -103,7 +102,6 @@ router.get("/", async (req, res) => {
 // GET ALL BLOG POSTS BY USER
 router.get("/:userId", async (req, res) => {
   try {
-
     const cacheKey = getCacheKey("posts", req.params.userId);
     const cachedPosts = await redis.get(cacheKey);
     if (cachedPosts) {
@@ -288,7 +286,7 @@ router.delete("/:id", authenticate, async (req, res) => {
 
     await redis.del("posts:all");
     await redis.del(getCacheKey("posts", post.userId));
-    
+
     res.json({ message: "Post deleted successfully" });
   } catch (err) {
     console.error(err);
