@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../Store/UserContext";
 
-function UpdatePost({ id, onUpdate }) {
+function UpdatePost({ id, onUpdate, closeModal }) {
   const { UpdatePost } = useContext(UserContext);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -19,10 +19,13 @@ function UpdatePost({ id, onUpdate }) {
       await UpdatePost(id, data); // ✅ Send correct post ID
       setMessage("Post updated successfully!");
 
-      // ✅ Trigger re-fetch of posts
       if (onUpdate) {
         onUpdate(); // 🔄 Refresh posts after update
       }
+
+      setTimeout(() => {
+        closeModal(); // ✅ Close the modal after update
+      }, 1000);
     } catch (error) {
       setMessage("Failed to update post.");
       console.error(error);
@@ -32,46 +35,61 @@ function UpdatePost({ id, onUpdate }) {
   };
 
   return (
-    <div className="p-4 bg-gray-100 rounded-md shadow-md mt-4">
-      <h2 className="text-xl font-bold">Update Post</h2>
-
-      {message && <p className="text-sm text-green-600 mt-2">{message}</p>}
-
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-            Title
-          </label>
-          <input
-            type="text"
-            name="title"
-            id="title"
-            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="content" className="block text-sm font-medium text-gray-700">
-            Content
-          </label>
-          <textarea
-            name="content"
-            id="content"
-            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-            rows="4"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-          ></textarea>
-        </div>
-
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md" disabled={loading}>
-          {loading ? "Updating..." : "Update"}
+    <div
+      className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50" // ✅ Ensures modal appears in front
+      onClick={closeModal} // ✅ Close modal when clicking outside
+    >
+      <div
+        className="bg-white p-8 rounded-lg shadow-lg w-96 relative z-50" // ✅ Ensures modal content stays above other elements
+        onClick={(e) => e.stopPropagation()} // ✅ Prevent closing when clicking inside
+      >
+        {/* ✅ Close Button */}
+        <button
+          className="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl"
+          onClick={closeModal}
+        >
+          &times;
         </button>
-      </form>
+
+        {/* ✅ Success/Error Message */}
+        {message && <p className="text-green-600 text-sm mb-2">{message}</p>}
+
+        {/* ✅ Update Post Title */}
+        <h2 className="text-xl font-bold mb-4 text-center">Update Post</h2>
+
+        {/* ✅ Update Post Form */}
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">Title</label>
+            <input
+              type="text"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300 transition"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">Content</label>
+            <textarea
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300 transition"
+              rows="4"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              required
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+            disabled={loading}
+          >
+            {loading ? "Updating..." : "Update Post"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

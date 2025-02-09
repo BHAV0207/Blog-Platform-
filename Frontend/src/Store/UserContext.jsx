@@ -42,7 +42,7 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const getPostById = async (id) => {
+  const getPostById = async () => {
     try {
       const token = localStorage.getItem("token");
       const decode = jwtDecode(token);
@@ -89,6 +89,21 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const DeletePost = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      await axios.delete(`http://localhost:3000/api/blog/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      console.log("Post deleted successfully!");
+    } catch (err) {
+      console.error("Error deleting post:", err);
+    }
+  }
+
   return (
     <UserContext.Provider
       value={{
@@ -102,6 +117,7 @@ export const UserProvider = ({ children }) => {
         getCommentsById,
         userComments,
         UpdatePost,
+        DeletePost
       }}
     >
       {children}
