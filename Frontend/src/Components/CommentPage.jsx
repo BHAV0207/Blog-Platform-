@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../Store/UserContext";
-import { FiMoreVertical, FiX } from "react-icons/fi"; // ✅ Import icons
+import { FiMoreVertical, FiX } from "react-icons/fi";
 
 function CommentPage() {
   const {
@@ -16,7 +16,7 @@ function CommentPage() {
   const [updateModal, setUpdateModal] = useState(false);
   const [updateContent, setUpdateContent] = useState("");
   const [updateCommentId, setUpdateCommentId] = useState(null);
-  const [dropdownOpen, setDropdownOpen] = useState(null); // ✅ Track which comment menu is open
+  const [dropdownOpen, setDropdownOpen] = useState(null);
 
   useEffect(() => {
     const syncing = async () => {
@@ -38,7 +38,6 @@ function CommentPage() {
     }
   }, [userComments]);
 
-  // ✅ Handle Update (with correct comment ID)
   const handleUpdate = async (e) => {
     e.preventDefault();
     if (!updateCommentId) return;
@@ -51,18 +50,17 @@ function CommentPage() {
     setUpdateContent("");
   };
 
-  // ✅ Open Update Modal (Set content & ID)
   const openUpdateModal = (comment) => {
     setUpdateCommentId(comment.id);
     setUpdateContent(comment.content);
     setUpdateModal(true);
-    setDropdownOpen(null); // ✅ Close dropdown menu
+    setDropdownOpen(null);
   };
 
   const handleDeleteComment = async (id) => {
     await deleteComment(id);
     await getCommentsByUserId(user.id);
-    setDropdownOpen(null); // ✅ Close dropdown menu after deleting
+    setDropdownOpen(null);
   };
 
   return (
@@ -80,7 +78,6 @@ function CommentPage() {
                   {comment.User?.name || "Unknown User"}
                 </h2>
 
-                {/* ✅ Three Dots Button (Menu Toggle) */}
                 <button
                   className="text-gray-600 hover:text-black p-2"
                   onClick={() =>
@@ -93,7 +90,6 @@ function CommentPage() {
                 </button>
               </div>
 
-              {/* ✅ Dropdown Menu for Update & Delete */}
               {dropdownOpen === comment.id && (
                 <div className="absolute top-10 right-2 bg-white border shadow-lg rounded-md w-40 z-50">
                   <button
@@ -111,7 +107,6 @@ function CommentPage() {
                 </div>
               )}
 
-              {/* ✅ Comment Content */}
               <h2 className="text-lg font-semibold">{comment.content}</h2>
               <p className="text-sm text-gray-600">
                 <span className="font-semibold">Created on:</span>{" "}
@@ -130,7 +125,6 @@ function CommentPage() {
         )}
       </div>
 
-      {/* ✅ Update Modal */}
       {updateModal && (
         <div
           className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50"
@@ -140,7 +134,6 @@ function CommentPage() {
             className="bg-white p-6 rounded-lg shadow-lg w-96 relative"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* ✅ Close Button */}
             <button
               className="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl"
               onClick={() => setUpdateModal(false)}
