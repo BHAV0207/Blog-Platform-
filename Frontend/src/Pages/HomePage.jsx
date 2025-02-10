@@ -16,10 +16,14 @@ import CreatePost from "../Components/CreatePost"; // ✅ Import Create Post Com
 import CommentPage from "../Components/CommentPage";
 
 function HomePage() {
-  const { user } = useContext(UserContext);
+  const { user , getUser } = useContext(UserContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [subMenuOpen, setSubMenuOpen] = useState(false); // ✅ State for sub-hamburger
   const [activeSection, setActiveSection] = useState("feed");
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {

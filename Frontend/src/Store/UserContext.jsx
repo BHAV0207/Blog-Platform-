@@ -157,6 +157,23 @@ export const UserProvider = ({ children }) => {
     }
   }
 
+  const deleteComment = async (id) => {
+    try{
+      const token = localStorage.getItem('token');
+      if(!token){
+        return;
+      }
+
+      await axios.delete(`http://localhost:3000/api/comment/${id}` , {
+        headers: {Authorization: `Bearer ${token}`}
+      })
+
+      console.log("Comment deleted successfully");
+    }catch(err){
+      console.log(err);
+    }
+  }
+
   return (
     <UserContext.Provider
       value={{
@@ -173,6 +190,8 @@ export const UserProvider = ({ children }) => {
         DeletePost,
         postCommentOnAPost,
         fetchCommentsForPost,
+        updateComment,
+        deleteComment
       }}
     >
       {children}

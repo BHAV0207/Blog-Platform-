@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../Store/UserContext";
 import { Link } from "react-router-dom";
-import { FiMessageSquare } from "react-icons/fi"; // ✅ Import comment icon
+import { FiMessageSquare } from "react-icons/fi";
 import CommentModal from "./CommentModal";
 
 function FeedPage() {
   const { allPosts, getAllPosts } = useContext(UserContext);
-  const [activePostId, setActivePostId] = useState(null); // ✅ Track which post's modal is open
+  const [activePostId, setActivePostId] = useState(null); 
 
   useEffect(() => {
     getAllPosts();
@@ -37,7 +37,6 @@ function FeedPage() {
               Read More
             </Link>
 
-            {/* ✅ Comment Icon Button */}
             <button
               className="absolute bottom-3 right-3 text-gray-600 hover:text-black p-2"
               onClick={() => setActivePostId(post.id)}
@@ -45,7 +44,6 @@ function FeedPage() {
               <FiMessageSquare size={22} />
             </button>
 
-            {/* ✅ Comment Modal (opens when clicked) */}
             {activePostId === post.id && (
               <CommentModal
                 postId={post.id}
