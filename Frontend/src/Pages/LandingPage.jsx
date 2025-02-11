@@ -3,37 +3,13 @@ import Header from "../Components/Header";
 import Login from "../Components/Login";
 import Register from "../Components/Register";
 import { ModalContext } from "../Store/Context";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { saveData } from "../Utils/CarousalData";
 import { Link } from "react-router-dom";
+import backgroundImage from "../../public/img2.jpg"; // Adjust the path
 
 function LandingPage() {
   const { auth } = useContext(ModalContext);
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-
-  saveData();
-
-  const carouselData = JSON.parse(localStorage.getItem("blogPosts")) || [];
-
-  const getRandomItems = (data, count) => {
-    return data.sort(() => 0.5 - Math.random()).slice(0, count);
-  };
-
-  const selectedItems = getRandomItems(carouselData, 9);
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 800,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    arrows: true,
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,69 +23,43 @@ function LandingPage() {
   }, [lastScrollY]);
 
   return (
-    <div className="bg-gray-100 w-screen min-h-screen flex flex-col overflow-x-hidden">
-      <div
-        className={`fixed top-0 left-0 w-full bg-white shadow-md z-50 transition-transform duration-300 ${
-          showHeader ? "translate-y-0" : "-translate-y-full"
-        }`}
-      >
-        <Header />
-      </div>
+    <div
+      className="relative min-h-screen w-full flex flex-col bg-cover bg-center"
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundPosition: "center top", // ✅ Moves the image down slightly
+      }}
+    >
+      {/* ✅ Header Overlayed on Background */}
+      <Header />
 
-      <div className="w-full bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 flex flex-col items-center justify-center py-20 px-6 text-center mt-16">
-        <h1 className="text-6xl font-extrabold mb-4 drop-shadow-lg">
-          Welcome to BlogMania
+      {/* ✅ Hero Section */}
+      <div className="relative z-10 flex-grow flex flex-col items-center mb-30 justify-center text-center py-20 px-6">
+        <h1 className="text-4xl md:text-6xl text-white font-extrabold mb-4 drop-shadow-lg">
+          <span className="text-amber-700">We</span>lco
+          <span className="text-amber-700">m</span>e to Bl
+          <span className="text-amber-700">og</span>Mani
+          <span className="text-amber-700">a</span>
         </h1>
-        <p className="text-xl mb-6 max-w-2xl">
+        <p className="text-lg md:text-xl mb-6 text-gray-200 max-w-2xl drop-shadow-lg">
           Your go-to platform for insightful articles. Discover, learn, and
           share!
         </p>
         <Link
           to="/articles"
-          className="bg-green-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-green-600 transition-all duration-300"
+          className="bg-gray-500 text-white font-semibold px-6 md:px-8 py-2 md:py-3 rounded-full shadow-lg hover:bg-amber-700 transition-all duration-300"
         >
           Explore Articles
         </Link>
       </div>
 
-      <div className="w-full max-w-7xl mx-auto my-10 px-6">
-        <Slider {...settings} className="rounded-lg overflow-hidden shadow-lg">
-          {Array.from({ length: Math.ceil(selectedItems.length / 3) }).map(
-            (_, index) => (
-              <div key={index} className="w-full">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {selectedItems.slice(index * 3, index * 3 + 3).map((item) => (
-                    <div
-                      className="p-4 bg-white rounded-lg shadow-md flex flex-col items-center text-center"
-                      key={item.id}
-                    >
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-72 object-cover rounded-lg shadow-lg"
-                      />
-                      <h3 className="text-2xl font-extrabold text-gray-900 mt-4">
-                        {item.title}
-                      </h3>
-                      <p className="text-gray-700 text-lg font-medium mt-2">
-                        {item.description}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )
-          )}
-        </Slider>
-      </div>
-
-      {/* Authentication Forms */}
-      <div className="absolute bottom-10">
+      {/* ✅ Authentication Forms */}
+      <div className="relative z-10 absolute bottom-10">
         {auth === "login" ? <Login /> : <Register />}
       </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white p-4 text-center">
+      {/* ✅ Footer Stuck to Bottom */}
+      <footer className="relative z-10 bg-black text-white p-4 text-center mt-auto w-full">
         <p>&copy; {new Date().getFullYear()} BlogMania. All rights reserved.</p>
       </footer>
     </div>

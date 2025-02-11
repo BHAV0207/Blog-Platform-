@@ -61,30 +61,18 @@ const blogPosts = [
   },
   {
     id: 11,
-    image: "https://images.pexels.com/photos/2150/flight-sky-earth-space.jpg",
-    title: "Exploring the Mysteries of the Universe",
-    description: "A deep dive into space exploration and cosmic wonders.",
-  },
-  {
-    id: 12,
-    image: "https://images.pexels.com/photos/63329/pexels-photo-63329.jpeg",
-    title: "Iconic Architectural Wonders of the World",
-    description: "Discover the most stunning architectural masterpieces.",
-  },
-  {
-    id: 13,
     image: "https://images.pexels.com/photos/164907/pexels-photo-164907.jpeg",
     title: "The Evolution of Music Through the Ages",
     description: "Tracing the history and transformation of musical genres.",
   },
   {
-    id: 14,
+    id: 13,
     image: "https://images.pexels.com/photos/270404/pexels-photo-270404.jpeg",
     title: "The Future of Software Development",
     description: "Emerging trends in coding, programming, and technology.",
   },
   {
-    id: 15,
+    id: 12,
     image: "https://images.pexels.com/photos/458799/pexels-photo-458799.jpeg",
     title: "Why Pets Are Good for Your Mental Health",
     description: "Exploring the emotional benefits of having a pet companion.",
