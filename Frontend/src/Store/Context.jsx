@@ -4,7 +4,8 @@ import axios from "axios";
 export const ModalContext = createContext();
 
 export const ModalProvider = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [registerOpen , setRegisterOpen] = useState(false);
+  const [loginOpen , setLoginOpen] = useState(false);
   const [auth, setAuth] = useState("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -34,7 +35,7 @@ export const ModalProvider = ({ children }) => {
       setName("");
       setEmail("");
       setPassword("");
-      modalTrigger();
+      registerTrigger();
     } catch (error) {
       setErr("Registration failed. Please try again.");
       setSuccess("");
@@ -51,7 +52,7 @@ export const ModalProvider = ({ children }) => {
       setErr("");
       setEmail("");
       setPassword("");
-      modalTrigger();
+      loginTrigger();
       const token = res.data.token;
       localStorage.setItem("token", token);
 
@@ -62,15 +63,27 @@ export const ModalProvider = ({ children }) => {
     }
   };
 
-  const modalTrigger = () => {
-    setIsOpen(!isOpen);
+  const loginTrigger = () => {
+    setLoginOpen(!loginOpen);
+    setAuth("login");
+    setRegisterOpen(false);
   };
+
+  const registerTrigger = () => {
+    setRegisterOpen(!registerOpen);
+    setAuth("register");
+    setLoginOpen(false);
+    setSuccess(""); 
+  };
+  
 
   return (
     <ModalContext.Provider
       value={{
-        isOpen,
-        modalTrigger,
+        loginOpen,
+        loginTrigger,
+        registerOpen,
+        registerTrigger,
         auth,
         setAuth,
         name,

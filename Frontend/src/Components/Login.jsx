@@ -8,8 +8,9 @@ function Login() {
   const navigate = useNavigate();
 
   const {
-    isOpen,
-    modalTrigger,
+    loginTrigger,
+    loginOpen,
+    registerTrigger,
     axiosLogin,
     email,
     password,
@@ -47,12 +48,12 @@ function Login() {
     }
   }, [success, navigate]);
 
-  if (!isOpen) return null;
+  if (!loginOpen) return null;
 
   return (
     <div
       className="fixed inset-0 bg-cream-100 bg-opacity-40 backdrop-blur-lg flex justify-center items-center"
-      onClick={modalTrigger}
+      onClick={loginTrigger}
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
@@ -67,7 +68,7 @@ function Login() {
         {/* ✅ Close Button */}
         <button
           className="absolute top-3 right-3 text-gray-600 hover:text-red-500 transition"
-          onClick={modalTrigger}
+          onClick={loginTrigger}
         >
           <FiX size={22} />
         </button>
@@ -141,7 +142,7 @@ function Login() {
           <p className="text-sm text-center text-gray-600">
             Don't have an account?{" "}
             <span
-              onClick={() => modalTrigger()}
+              onClick={() => registerTrigger()}
               className="text-emerald-500 cursor-pointer hover:underline"
             >
               Sign Up

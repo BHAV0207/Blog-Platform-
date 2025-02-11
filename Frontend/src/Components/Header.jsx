@@ -4,17 +4,17 @@ import { Link } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 
 function Header() {
-  const { modalTrigger, setAuth } = useContext(ModalContext);
+  const { setAuth , loginTrigger , registerTrigger } = useContext(ModalContext);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogin = () => {
-    modalTrigger();
+    loginTrigger();
     setAuth("login");
     setMenuOpen(false);
   };
 
   const handleRegister = () => {
-    modalTrigger();
+    registerTrigger();
     setAuth("register");
     setMenuOpen(false);
   };
@@ -23,7 +23,7 @@ function Header() {
     <div className="absolute top-0 left-0 w-full text-white p-4 flex justify-between items-center z-50 bg-transparent">
       {/* ✅ Brand Name */}
       <Link to={"/"}>
-        <h1 className="text-3xl font-extrabold drop-shadow-lg">BlogMania</h1>
+        <h1 className="text-3xl text-black font-extrabold drop-shadow-lg">BlogMania</h1>
       </Link>
 
       {/* ✅ Mobile Menu Button */}
@@ -40,10 +40,9 @@ function Header() {
           <Link
             key={index}
             to={`/${text.toLowerCase()}`}
-            className="relative font-semibold transition-colors duration-300 ease-in-out hover:text-emerald-400"
+            className="relative font-bold text-gray-200 transition-colors duration-300 ease-in-out hover:text-emerald-400"
           >
             {text}
-            <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-emerald-400 transition-all duration-300 ease-in-out hover:w-full"></span>
           </Link>
         ))}
 

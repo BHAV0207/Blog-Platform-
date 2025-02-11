@@ -53,12 +53,10 @@ function LandingPage() {
         </Link>
       </div>
 
-      {/* ✅ Authentication Forms */}
       <div className="relative z-10 absolute bottom-10">
         {auth === "login" ? <Login /> : <Register />}
       </div>
 
-      {/* ✅ Footer Stuck to Bottom */}
       <footer className="relative z-10 bg-black text-white p-4 text-center mt-auto w-full">
         <p>&copy; {new Date().getFullYear()} BlogMania. All rights reserved.</p>
       </footer>

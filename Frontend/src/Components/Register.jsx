@@ -3,8 +3,9 @@ import { ModalContext } from "../Store/Context";
 
 function Register() {
   const {
-    isOpen,
-    modalTrigger,
+    registerTrigger,
+    registerOpen,
+    loginTrigger,
     name,
     setName,
     email,
@@ -24,17 +25,19 @@ function Register() {
   useEffect(() => {
     if (success) {
       setTimeout(() => {
-        modalTrigger();
+        registerTrigger();
+        setSuccess("");  // ✅ Reset success message when modal closes
       }, 1000);
     }
   }, [success]);
+  
 
-  if (!isOpen) return null;
+  if (!registerOpen) return null;
 
   return (
     <div
       className="fixed inset-0 bg-opacity-30 backdrop-blur-sm flex justify-center items-center"
-      onClick={modalTrigger}
+      onClick={registerTrigger}
     >
       <div
         className="bg-white p-8 rounded-lg shadow-lg w-96 relative"
@@ -42,7 +45,7 @@ function Register() {
       >
         <button
           className="absolute top-2 right-2 text-gray-600 hover:text-black"
-          onClick={modalTrigger}
+          onClick={registerTrigger}
         >
           &times;
         </button>
@@ -93,6 +96,16 @@ function Register() {
           >
             Register
           </button>
+
+          <p className="text-sm text-center text-gray-600">
+            Don't have an account?{" "}
+            <span
+              onClick={() => loginTrigger()}
+              className="text-emerald-500 cursor-pointer hover:underline"
+            >
+              Login
+            </span>
+          </p>
         </form>
       </div>
     </div>
