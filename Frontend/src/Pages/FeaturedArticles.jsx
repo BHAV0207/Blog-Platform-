@@ -1,16 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import Header from "../Components/Header";
-import { ModalContext } from "../Store/Context";
-import Login from "../Components/Login";
-import Register from "../Components/Register";
+
 
 function FeaturedArticles() {
-  const { auth } = useContext(ModalContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true); 
-  const navigate = useNavigate(); 
 
   useEffect(() => {
     fetchPosts();
@@ -29,21 +24,11 @@ function FeaturedArticles() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100">
-     
-      <Header />
-
-      <div className="p-6">
-        <button
-          onClick={() => navigate("/")}
-          className="bg-blue-600 text-white px-5 py-2 rounded-lg shadow-lg hover:bg-blue-700 transition duration-300"
-        >
-          ← Back to Home
-        </button>
-      </div>
+    <div className="min-h-screen flex flex-col">
 
       <div className="flex-grow p-6">
-        <h2 className="text-3xl font-bold text-center mb-6">Featured Articles</h2>
+        <h1 className="text-4xl font-extrabold text-amber-600 text-center mb-6">
+          <span className="text-white">Fe</span>atu<span className="text-white">re</span>d Ar<span className="text-white">ti</span>cles</h1>
 
         {loading ? (
           <div className="flex justify-center items-center h-64">
@@ -52,7 +37,7 @@ function FeaturedArticles() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {posts.map((post) => (
-              <div className="bg-white rounded-lg shadow-md p-4" key={post.id}>
+              <div className="bg-gray-300 opacity-60 hover:opacity-100 transition-all duration-300  rounded-lg shadow-md p-4 " key={post.id}>
                 <img
                   src={post.imageUrls[0] || "https://via.placeholder.com/300"}
                   alt={post.title}
@@ -73,14 +58,6 @@ function FeaturedArticles() {
           </div>
         )}
       </div>
-
-      <div className="flex justify-center p-6">
-        {auth === "login" ? <Login /> : <Register />}
-      </div>
-
-      <footer className="bg-gray-800 text-white p-4 text-center">
-        <p>&copy; {new Date().getFullYear()} BlogMania. All rights reserved.</p>
-      </footer>
     </div>
   );
 }

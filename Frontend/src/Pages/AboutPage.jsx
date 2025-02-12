@@ -26,38 +26,38 @@ function AboutPage() {
         <div className=" p-6 sm:p-8 rounded-xl shadow-lg max-w-3xl w-full text-gray-900">
           <h1 className="text-3xl md:text-4xl font-bold mb-6 text-center">
           </h1>
-          <p className="text-lg leading-relaxed">
+          <p className="text-xl  font-semibold leading-relaxed">
             Welcome to <strong>BlogMania</strong>, your ultimate destination for
             insightful articles, opinions, and ideas! Our platform is designed
             for creators, thinkers, and readers to come together and share
             knowledge across various domains.
           </p>
 
-          <h2 className="text-2xl font-semibold mt-6">🌟 Our Mission</h2>
-          <p className="text-lg mt-2">
+          <h2 className="text-2xl font-extrabold mt-6">🌟 Our Mission</h2>
+          <p className="text-xl font-semibold mt-2">
             At BlogMania, we believe in the power of words and the impact of
             storytelling. Our goal is to provide a space where writers can
             freely express their thoughts while readers can engage with
             meaningful content that inspires, educates, and entertains.
           </p>
 
-          <h2 className="text-2xl font-semibold mt-6">📝 What We Offer</h2>
-          <ul className="list-disc list-inside text-lg mt-2 space-y-2">
+          <h2 className="text-2xl font-extrabold mt-6">📝 What We Offer</h2>
+          <ul className="list-disc font-semibold list-inside text-xl mt-2 space-y-2">
             <li>🌍 A diverse collection of blog posts on various topics.</li>
             <li>✍️ A platform for aspiring and experienced writers.</li>
             <li>💬 Engaging discussions through comments and feedback.</li>
             <li>📚 Personalized reading recommendations.</li>
           </ul>
 
-          <h2 className="text-2xl font-semibold mt-6">🤝 Join Our Community</h2>
-          <p className="text-lg mt-2">
+          <h2 className="text-2xl font-extrabold mt-6">🤝 Join Our Community</h2>
+          <p className="text-xl font-semibold mt-2">
             Become a part of the BlogMania family! Whether you’re a reader,
             writer, or just someone who loves to explore new ideas, there’s a
             place for you here.
           </p>
 
-          <h2 className="text-2xl font-semibold mt-6">📩 Get In Touch</h2>
-          <p className="text-lg mt-2">
+          <h2 className="text-2xl font-extrabold mt-6">📩 Get In Touch</h2>
+          <p className="text-xl font-semibold mt-2">
             Have questions or suggestions? Reach out to us at{" "}
             <a
               href="mailto:support@blogmania.com"
