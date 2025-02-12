@@ -24,7 +24,7 @@ export const UserProvider = ({ children }) => {
         return;
       }
       const res = await axios.get(
-        `${process.env.BACKEND_URL}
+        `${import.meta.env.VITE_BACKEND_URL}/
 api/user/${decode.id}`
       );
       setUser(res.data);
@@ -35,7 +35,7 @@ api/user/${decode.id}`
 
   const getAllPosts = async () => {
     try {
-      const res = await axios.get(`${process.env.BACKEND_URL}
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/
 api/blog`);
       setAllPosts(res.data.responseData.post);
     } catch (err) {
@@ -51,7 +51,7 @@ api/blog`);
         return;
       }
       const res = await axios.get(
-        `${process.env.BACKEND_URL}
+        `${import.meta.env.VITE_BACKEND_URL}/
 api/blog/${decode.id}`
       );
       setPostById(res.data.responseData.post);
@@ -65,10 +65,14 @@ api/blog/${decode.id}`
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      await axios.put(`${process.env.BACKEND_URL}
-api/blog/${id}`, data, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/
+api/blog/${id}`,
+        data,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       console.log("Post updated successfully!");
     } catch (err) {
@@ -80,18 +84,20 @@ api/blog/${id}`, data, {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
- 
-      await axios.delete(`${process.env.BACKEND_URL}
-api/blog/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+
+      await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/
+api/blog/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       console.log("Post deleted successfully!");
     } catch (err) {
       console.error("Error deleting post:", err);
     }
-  }
-
+  };
 
   const getCommentsByUserId = async () => {
     try {
@@ -101,7 +107,7 @@ api/blog/${id}`, {
         return;
       }
       const res = await axios.get(
-        `${process.env.BACKEND_URL}
+        `${import.meta.env.VITE_BACKEND_URL}/
 api/comment/user/${decode.id}`
       );
       setUserComments(res.data);
@@ -110,79 +116,85 @@ api/comment/user/${decode.id}`
     }
   };
 
-  const postCommentOnAPost = async (id , commentContent) => {
-    try{
-      const token = localStorage.getItem('token');
+  const postCommentOnAPost = async (id, commentContent) => {
+    try {
+      const token = localStorage.getItem("token");
       const decode = jwtDecode(token);
-      if(!token){
+      if (!token) {
         return;
       }
 
-      const res = await axios.post(`${process.env.BACKEND_URL}
-api/comment/${id}`, {
-        content : commentContent,
-        userId : decode.id
-      })
-    }catch(err){
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/
+api/comment/${id}`,
+        {
+          content: commentContent,
+          userId: decode.id,
+        }
+      );
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
-
-  const fetchCommentsForPost =async (id) => {
-    try{
-      const token = localStorage.getItem('token');
-      if(!token){
+  const fetchCommentsForPost = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
         return [];
       }
 
-      const res = await axios.get(`${process.env.BACKEND_URL}
-api/comment/${id}`)
-      return res.data
-      // console.log(res.data);
-
-    }catch(err){
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/
+api/comment/${id}`);
+      return res.data;
+    } catch (err) {
       console.log(err);
       return [];
     }
-  }
+  };
 
-
-  const updateComment = async (id , data) => {
-    try{
-      const token = localStorage.getItem('token');
-      if(!token){
+  const updateComment = async (id, data) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
         return;
       }
 
-      await axios.put(`${process.env.BACKEND_URL}
-api/comment/${id}` , data , {
-        headers: {Authorization: `Bearer ${token}`}
-      })
+      await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/
+api/comment/${id}`,
+        data,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       console.log("Comment updated successfully");
-    }catch(err){
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   const deleteComment = async (id) => {
-    try{
-      const token = localStorage.getItem('token');
-      if(!token){
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
         return;
       }
 
-      await axios.delete(`${process.env.BACKEND_URL}
-api/comment/${id}` , {
-        headers: {Authorization: `Bearer ${token}`}
-      })
+      await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/
+api/comment/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       console.log("Comment deleted successfully");
-    }catch(err){
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   return (
     <UserContext.Provider
@@ -201,7 +213,7 @@ api/comment/${id}` , {
         postCommentOnAPost,
         fetchCommentsForPost,
         updateComment,
-        deleteComment
+        deleteComment,
       }}
     >
       {children}

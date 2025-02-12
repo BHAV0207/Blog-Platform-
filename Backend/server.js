@@ -6,7 +6,7 @@ const cors = require('cors')
 const app = express();
 
 app.use(cors({
-  origin: ["http://localhost:5173"]
+  origin: ["http://localhost:5173" ,"https://bespoke-bubblegum-993033.netlify.app"]
 }));
 app.use(express.json());
 

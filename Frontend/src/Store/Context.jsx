@@ -26,7 +26,7 @@ export const ModalProvider = ({ children }) => {
         return;
       }
       const res = await axios.post(
-        `${process.env.BACKEND_URL}/api/auth/register`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/register`,
         {
           name,
           email,
@@ -48,7 +48,7 @@ export const ModalProvider = ({ children }) => {
   const axiosLogin = async () => {
     try {
       const res = await axios.post(
-        `${process.env.BACKEND_URL}/api/auth/login`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
         {
           email,
           password,
