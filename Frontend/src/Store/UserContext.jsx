@@ -12,8 +12,8 @@ export const UserProvider = ({ children }) => {
 
   const HandleLogout = () => {
     localStorage.removeItem("token");
-
     setUser(null);
+    return true;
   };
 
   const getUser = async () => {

@@ -20,11 +20,19 @@ function HomePage() {
   return (
     <div
       className={`min-h-screen flex flex-col transition-colors duration-300 ${
-        theme === "light" ? "bg-cream-200 text-gray-900" : "bg-gray-900 text-gray-100"
+        theme === "light"
+          ? "bg-cream-200 text-gray-900"
+          : "bg-gray-900 text-gray-100"
       }`}
     >
-      {/* ✅ Header with Theme Support */}
-      <HomePageHeader user={user} setActiveSection={setActiveSection} activeSection={activeSection} />
+      {/* ✅ Sticky Header */}
+      <div className="sticky top-0 z-50">
+        <HomePageHeader
+          user={user}
+          setActiveSection={setActiveSection}
+          activeSection={activeSection}
+        />
+      </div>
 
       {/* ✅ Page Content with Theme-Aware Colors */}
       <div className="flex-grow p-6 transition-colors duration-300">

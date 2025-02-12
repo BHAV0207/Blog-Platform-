@@ -49,7 +49,7 @@ function LandingPage() {
               <span className="text-amber-700">og</span>Mani
               <span className="text-amber-700">a</span>
             </h1>
-            <p className="text-lg md:text-xl mb-6 text-gray-300 max-w-2xl drop-shadow-lg">
+            <p className="text-lg md:text-xl mb-6 bg-gray-100 px-2 rounded-md opacity-55 text-gray-800 max-w-2xl drop-shadow-lg">
               Your go-to platform for insightful articles. Discover, learn, and
               share!
             </p>

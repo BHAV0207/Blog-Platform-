@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../Store/UserContext";
-import { ThemeContext } from "../Store/ThemeContext"; // ✅ Import Theme Context
+import { ThemeContext } from "../Store/ThemeContext";
 import { useNavigate } from "react-router-dom";
 import { ModalContext } from "../Store/Context";
 import {
@@ -12,26 +12,35 @@ import {
   FiPlusCircle,
   FiLogOut,
   FiSun,
-  FiMoon, // ✅ Theme Icons
+  FiMoon,
 } from "react-icons/fi";
 
 function HomePageHeader({ user, setActiveSection, activeSection }) {
   const navigate = useNavigate();
-  const { HandleLogout } = useContext(UserContext);
+  const { HandleLogout, setUser } = useContext(UserContext); // ✅ Get setUser to clear state
   const { setSuccess } = useContext(ModalContext);
-  const { theme, toggleTheme } = useContext(ThemeContext); // ✅ Get theme & toggle function
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [subMenuOpen, setSubMenuOpen] = useState(false);
   const [logoutBox, setLogoutBox] = useState(false);
 
-  const handleLogoutBox = () => setLogoutBox((prev) => !prev);
+  const handleLogoutBox = (e) => {
+    e.stopPropagation();
+    setTimeout(() => setLogoutBox((prev) => !prev), 200); // ✅ Adds delay
+  };
+  
 
   const handleLog = async () => {
-    const logoutSuccess = await HandleLogout();
-    setSuccess("");
-    if (logoutSuccess) {
-      navigate("/");
+    try {
+      const logoutSuccess = await HandleLogout();
+      if (logoutSuccess) {
+        setSuccess("");
+        setMenuOpen(false); 
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
     }
   };
 
@@ -43,7 +52,6 @@ function HomePageHeader({ user, setActiveSection, activeSection }) {
           : "bg-gray-900 text-gray-100 border-gray-700"
       }`}
     >
-      {/* ✅ Menu Button */}
       <button
         onClick={() => setMenuOpen(true)}
         className="text-2xl transition-transform duration-300 ease-in-out hover:scale-110"
@@ -51,7 +59,6 @@ function HomePageHeader({ user, setActiveSection, activeSection }) {
         <FiMenu />
       </button>
 
-      {/* ✅ BlogMania Logo - Clicking scrolls back to homepage */}
       <h1
         className="text-3xl font-extrabold cursor-pointer transition-colors duration-300 ease-in-out hover:text-emerald-500"
         onClick={() => setActiveSection("feed")}
@@ -64,7 +71,9 @@ function HomePageHeader({ user, setActiveSection, activeSection }) {
         className={`fixed inset-y-0 left-0 w-64 shadow-lg transform transition-transform duration-500 ease-in-out z-50 ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         } ${
-          theme === "light" ? "bg-white text-gray-800" : "bg-gray-800 text-white"
+          theme === "light"
+            ? "bg-white text-gray-800"
+            : "bg-gray-800 text-white"
         }`}
       >
         <div className="p-6 flex flex-col">
@@ -81,7 +90,11 @@ function HomePageHeader({ user, setActiveSection, activeSection }) {
           {[
             { name: "My Feed", icon: <FiFileText />, section: "feed" },
             { name: "My Profile", icon: <FiUser />, section: "profile" },
-            { name: "My Comments", icon: <FiMessageSquare />, section: "comments" },
+            {
+              name: "My Comments",
+              icon: <FiMessageSquare />,
+              section: "comments",
+            },
           ].map((item) => (
             <button
               key={item.section}
@@ -153,11 +166,43 @@ function HomePageHeader({ user, setActiveSection, activeSection }) {
             className="flex items-center text-lg p-3 rounded-lg transition-all duration-300 hover:bg-gray-300 dark:hover:bg-gray-700"
             onClick={toggleTheme}
           >
-            {theme === "light" ? <FiMoon className="mr-3" /> : <FiSun className="mr-3" />}
+            {theme === "light" ? (
+              <FiMoon className="mr-3" />
+            ) : (
+              <FiSun className="mr-3" />
+            )}
             {theme === "light" ? "Dark Mode" : "Light Mode"}
           </button>
         </div>
       </div>
+
+      {/* ✅ Logout Confirmation */}
+      {logoutBox && (
+        <div
+          className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-white rounded-lg p-4 shadow-xl transition-all duration-300 ease-in-out z-50"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h1 className="text-lg font-bold text-gray-800 mb-2 text-center">
+            Are you sure you want to logout?
+          </h1>
+
+          <div className="flex space-x-4 mt-2 w-full">
+            <button
+              onClick={() => setLogoutBox(false)}
+              className="flex-1 bg-gray-300 text-gray-700 font-semibold py-2 rounded-lg shadow-md hover:bg-gray-400 transition duration-200 p-1"
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={handleLog}
+              className="flex-1 bg-red-600 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-red-700 transition duration-200 p-1"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
