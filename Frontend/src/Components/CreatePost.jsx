@@ -40,7 +40,7 @@ function CreatePost() {
 
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/blog/create",
+        `${process.env.BACKEND_URL}/api/blog/create`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

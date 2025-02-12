@@ -24,7 +24,8 @@ export const UserProvider = ({ children }) => {
         return;
       }
       const res = await axios.get(
-        `http://localhost:3000/api/user/${decode.id}`
+        `${process.env.BACKEND_URL}
+api/user/${decode.id}`
       );
       setUser(res.data);
     } catch (err) {
@@ -34,7 +35,8 @@ export const UserProvider = ({ children }) => {
 
   const getAllPosts = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/blog");
+      const res = await axios.get(`${process.env.BACKEND_URL}
+api/blog`);
       setAllPosts(res.data.responseData.post);
     } catch (err) {
       console.error(err);
@@ -49,7 +51,8 @@ export const UserProvider = ({ children }) => {
         return;
       }
       const res = await axios.get(
-        `http://localhost:3000/api/blog/${decode.id}`
+        `${process.env.BACKEND_URL}
+api/blog/${decode.id}`
       );
       setPostById(res.data.responseData.post);
     } catch (err) {
@@ -62,7 +65,8 @@ export const UserProvider = ({ children }) => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      await axios.put(`http://localhost:3000/api/blog/${id}`, data, {
+      await axios.put(`${process.env.BACKEND_URL}
+api/blog/${id}`, data, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -77,7 +81,8 @@ export const UserProvider = ({ children }) => {
       const token = localStorage.getItem("token");
       if (!token) return;
  
-      await axios.delete(`http://localhost:3000/api/blog/${id}`, {
+      await axios.delete(`${process.env.BACKEND_URL}
+api/blog/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -96,7 +101,8 @@ export const UserProvider = ({ children }) => {
         return;
       }
       const res = await axios.get(
-        `http://localhost:3000/api/comment/user/${decode.id}`
+        `${process.env.BACKEND_URL}
+api/comment/user/${decode.id}`
       );
       setUserComments(res.data);
     } catch (err) {
@@ -112,7 +118,8 @@ export const UserProvider = ({ children }) => {
         return;
       }
 
-      const res = await axios.post(`http://localhost:3000/api/comment/${id}`, {
+      const res = await axios.post(`${process.env.BACKEND_URL}
+api/comment/${id}`, {
         content : commentContent,
         userId : decode.id
       })
@@ -129,7 +136,8 @@ export const UserProvider = ({ children }) => {
         return [];
       }
 
-      const res = await axios.get(`http://localhost:3000/api/comment/${id}`)
+      const res = await axios.get(`${process.env.BACKEND_URL}
+api/comment/${id}`)
       return res.data
       // console.log(res.data);
 
@@ -147,7 +155,8 @@ export const UserProvider = ({ children }) => {
         return;
       }
 
-      await axios.put(`http://localhost:3000/api/comment/${id}` , data , {
+      await axios.put(`${process.env.BACKEND_URL}
+api/comment/${id}` , data , {
         headers: {Authorization: `Bearer ${token}`}
       })
 
@@ -164,7 +173,8 @@ export const UserProvider = ({ children }) => {
         return;
       }
 
-      await axios.delete(`http://localhost:3000/api/comment/${id}` , {
+      await axios.delete(`${process.env.BACKEND_URL}
+api/comment/${id}` , {
         headers: {Authorization: `Bearer ${token}`}
       })
 

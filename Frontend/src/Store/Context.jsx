@@ -4,8 +4,8 @@ import axios from "axios";
 export const ModalContext = createContext();
 
 export const ModalProvider = ({ children }) => {
-  const [registerOpen , setRegisterOpen] = useState(false);
-  const [loginOpen , setLoginOpen] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
   const [auth, setAuth] = useState("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -25,11 +25,14 @@ export const ModalProvider = ({ children }) => {
         );
         return;
       }
-      const res = await axios.post("http://localhost:3000/api/auth/register", {
-        name,
-        email,
-        password,
-      });
+      const res = await axios.post(
+        `${process.env.BACKEND_URL}/api/auth/register`,
+        {
+          name,
+          email,
+          password,
+        }
+      );
       setSuccess("Registration successful!");
       setErr("");
       setName("");
@@ -44,10 +47,13 @@ export const ModalProvider = ({ children }) => {
 
   const axiosLogin = async () => {
     try {
-      const res = await axios.post("http://localhost:3000/api/auth/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        `${process.env.BACKEND_URL}/api/auth/login`,
+        {
+          email,
+          password,
+        }
+      );
       setSuccess("Login successful!");
       setErr("");
       setEmail("");
@@ -73,9 +79,8 @@ export const ModalProvider = ({ children }) => {
     setRegisterOpen(!registerOpen);
     setAuth("register");
     setLoginOpen(false);
-    setSuccess(""); 
+    setSuccess("");
   };
-  
 
   return (
     <ModalContext.Provider

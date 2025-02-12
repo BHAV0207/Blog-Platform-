@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 
 function FeaturedArticles() {
@@ -14,7 +15,7 @@ function FeaturedArticles() {
   const fetchPosts = async () => {
     try {
       setLoading(true); 
-      const res = await axios.get("http://localhost:3000/api/blog");
+      const res = await axios.get(`${process.env.BACKEND_URL}/api/blog`);
       setPosts(res.data.responseData.post);
     } catch (err) {
       console.error(err);
