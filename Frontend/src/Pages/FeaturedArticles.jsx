@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { saveData } from "../Utils/CarousalData";
 
 function FeaturedArticles() {
 
@@ -7,29 +8,12 @@ function FeaturedArticles() {
   const [posts, setPosts] = useState([]); // ✅ Use imported data directly
   const [loading, setLoading] = useState(false); // ✅ Set loading to false since we're not fetching
   const [activePost, setActivePost] = useState(null); // ✅ Track clicked post for small screens
-  
   const blogPosts = localStorage.getItem("blogPosts");
-  // useEffect(() => {
-  //   fetchPosts();
-  // }, []);
-
-  // const fetchPosts = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const res = await axios.get(
-  //       `${import.meta.env.VITE_BACKEND_URL}/api/blog`
-  //     );
-  //     setPosts(res.data.responseData.post);
-  //   } catch (err) {
-  //     console.error(err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   useEffect(() => {
+    saveData();
     setPosts(JSON.parse(blogPosts));
-  }, [blogPosts]);
+  }, []);
 
   // ✅ Handle Click for Small Screens
   const handlePostClick = (id) => {
@@ -53,7 +37,7 @@ function FeaturedArticles() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {posts.map((post) => (
+            {posts?.map((post) => (
               <div
                 key={post.id}
                 className={`bg-gray-300 rounded-lg shadow-md p-4 transition-all duration-300 
