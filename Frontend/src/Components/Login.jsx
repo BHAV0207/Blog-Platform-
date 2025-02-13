@@ -52,7 +52,7 @@ function Login() {
 
   return (
     <div
-      className="fixed inset-0 bg-cream-100 bg-opacity-40 backdrop-blur-lg flex justify-center items-center"
+      className="fixed inset-0 bg-cream-100 bg-opacity-40 z-50 backdrop-blur-lg flex justify-center items-center"
       onClick={loginTrigger}
     >
       <motion.div
