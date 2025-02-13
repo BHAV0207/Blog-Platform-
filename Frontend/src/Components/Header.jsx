@@ -46,7 +46,7 @@ function Header({ scrollToHome }) {
       <button onClick={scrollToHome} className="focus:outline-none">
         <h1
           className={`text-3xl font-extrabold drop-shadow-lg cursor-pointer ${
-            isScrolled ? "text-white" : "text-black"
+            isScrolled ? "text-white" : "text-gray-600"
           }`}
         >
           BlogMania

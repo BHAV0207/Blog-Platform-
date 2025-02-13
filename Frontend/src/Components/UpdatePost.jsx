@@ -20,11 +20,11 @@ function UpdatePost({ id, onUpdate, closeModal }) {
       setMessage("Post updated successfully!");
 
       if (onUpdate) {
-        onUpdate(); 
+        onUpdate();
       }
 
       setTimeout(() => {
-        closeModal(); 
+        closeModal();
       }, 1000);
     } catch (error) {
       setMessage("Failed to update post.");
@@ -36,8 +36,8 @@ function UpdatePost({ id, onUpdate, closeModal }) {
 
   return (
     <div
-      className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50" 
-      onClick={closeModal} 
+      className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50"
+      onClick={closeModal}
     >
       <div
         className="bg-white p-8 rounded-lg shadow-lg w-96 relative z-50" // ✅ Ensures modal content stays above other elements
@@ -60,7 +60,9 @@ function UpdatePost({ id, onUpdate, closeModal }) {
         {/* ✅ Update Post Form */}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Title</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Title
+            </label>
             <input
               type="text"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300 transition"
@@ -71,7 +73,9 @@ function UpdatePost({ id, onUpdate, closeModal }) {
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Content</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Content
+            </label>
             <textarea
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300 transition"
               rows="4"

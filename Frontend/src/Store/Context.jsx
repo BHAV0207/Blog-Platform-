@@ -61,6 +61,7 @@ export const ModalProvider = ({ children }) => {
       loginTrigger();
       const token = res.data.token;
       localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(res.data.user.id));
 
       setLoginData(res.data.user);
     } catch (error) {

@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../Store/UserContext";
 import { FiSend, FiX, FiTrash2 } from "react-icons/fi"; // ✅ Import Delete Icon
+import { ThemeContext } from "../Store/ThemeContext";
+
 
 function CommentModal({ postId, closeModal }) {
-  const { postCommentOnAPost, fetchCommentsForPost, deleteComment, user } =
-    useContext(UserContext);
+  const { postCommentOnAPost, fetchCommentsForPost, deleteComment, user } = useContext(UserContext);
+  const { theme } = useContext(ThemeContext);
   const [commentContent, setCommentContent] = useState("");
   const [localComments, setLocalComments] = useState([]);
 
@@ -25,9 +27,9 @@ function CommentModal({ postId, closeModal }) {
     if (!commentContent.trim()) return;
 
     const newComment = {
-      id: Date.now(), // Temporary ID until API response
+      id: Date.now(),
       content: commentContent,
-      userId: user.id, // ✅ Attach logged-in user's ID
+      userId: user.id,
       User: { name: "You" },
       createdAt: new Date().toLocaleDateString("en-GB"),
     };
@@ -48,22 +50,28 @@ function CommentModal({ postId, closeModal }) {
 
   const handleDelete = async (commentId) => {
     await deleteComment(commentId);
-    setLocalComments((prev) =>
-      prev.filter((comment) => comment.id !== commentId)
-    );
+    setLocalComments((prev) => prev.filter((comment) => comment.id !== commentId));
   };
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50"
+      className="fixed inset-0  bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50"
       onClick={closeModal}
     >
       <div
-        className="bg-white p-6 rounded-lg shadow-lg w-96 h-96 flex flex-col relative"
+        className={`p-6 rounded-lg shadow-lg w-96 h-96 flex flex-col relative transition-colors duration-300 ${
+          theme === "light"
+            ? "bg-white text-gray-900"
+            : "bg-gray-800 text-gray-100"
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          className="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl"
+          className={`absolute top-2 right-2 text-2xl transition-colors duration-300 ${
+            theme === "light"
+              ? "text-gray-600 hover:text-black"
+              : "text-gray-400 hover:text-white"
+          }`}
           onClick={closeModal}
         >
           <FiX />
@@ -76,17 +84,26 @@ function CommentModal({ postId, closeModal }) {
             localComments.map((comment) => (
               <div
                 key={comment.id}
-                className="p-3 bg-gray-100 rounded-md relative"
+                className={`p-3 rounded-md relative transition-colors duration-300 ${
+                  theme === "light"
+                    ? "bg-gray-100"
+                    : "bg-gray-700"
+                }`}
               >
                 <div className="flex justify-between items-center">
-                  <p className="font-semibold text-gray-800">
+                  <p className="font-semibold">
                     {comment.User?.name}
                   </p>
-                  <p className="text-xs text-gray-500">{comment.createdAt}</p>
+                  <p className={`text-xs ${
+                    theme === "light" ? "text-gray-500" : "text-gray-400"
+                  }`}>
+                    {comment.createdAt}
+                  </p>
                 </div>
-                <p className="text-gray-700">{comment.content}</p>
+                <p className={theme === "light" ? "text-gray-700" : "text-gray-300"}>
+                  {comment.content}
+                </p>
 
-                {/* ✅ Show delete button only if the logged-in user owns the comment */}
                 {comment.userId === user.id && (
                   <button
                     className="absolute top-2 right-8 text-red-500 hover:text-red-700"
@@ -98,7 +115,7 @@ function CommentModal({ postId, closeModal }) {
               </div>
             ))
           ) : (
-            <p className="text-gray-500 text-center">
+            <p className={theme === "light" ? "text-gray-500" : "text-gray-400"}>
               No comments yet. Be the first to comment!
             </p>
           )}
@@ -110,7 +127,11 @@ function CommentModal({ postId, closeModal }) {
         >
           <input
             type="text"
-            className="flex-grow p-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+            className={`flex-grow p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 transition-colors duration-300 ${
+              theme === "light"
+                ? "bg-white border-gray-300 text-gray-900"
+                : "bg-gray-700 border-gray-600 text-gray-100"
+            }`}
             placeholder="Write a comment..."
             value={commentContent}
             onChange={(e) => setCommentContent(e.target.value)}
@@ -118,7 +139,7 @@ function CommentModal({ postId, closeModal }) {
           />
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-300"
           >
             <FiSend size={20} />
           </button>

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../Store/UserContext";
-import { FiMoreVertical, FiX } from "react-icons/fi";
+import { ThemeContext } from "../Store/ThemeContext";
+import { FiMoreVertical, FiX, FiSend, FiTrash2 } from "react-icons/fi";
 
 function CommentPage() {
   const {
@@ -11,6 +12,7 @@ function CommentPage() {
     updateComment,
     deleteComment,
   } = useContext(UserContext);
+  const { theme } = useContext(ThemeContext);
 
   const [formattedComments, setFormattedComments] = useState([]);
   const [updateModal, setUpdateModal] = useState(false);
@@ -65,13 +67,21 @@ function CommentPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold mb-4">Your Comments</h1>
+      <h1 className={`text-2xl font-semibold mb-4 ${
+        theme === "light" ? "text-gray-900" : "text-gray-100"
+      }`}>
+        Your Comments
+      </h1>
       <div className="mt-4">
         {formattedComments.length > 0 ? (
           formattedComments.map((comment) => (
             <div
               key={comment.id}
-              className="mb-4 p-4 bg-gray-100 rounded-lg relative"
+              className={`mb-4 p-4 rounded-lg relative transition-colors duration-300 ${
+                theme === "light" 
+                  ? "bg-gray-100 text-gray-900" 
+                  : "bg-gray-800 text-gray-100"
+              }`}
             >
               <div className="flex justify-between items-center">
                 <h2 className="text-lg font-semibold">
@@ -79,27 +89,39 @@ function CommentPage() {
                 </h2>
 
                 <button
-                  className="text-gray-600 hover:text-black p-2"
-                  onClick={() =>
-                    setDropdownOpen(
-                      dropdownOpen === comment.id ? null : comment.id
-                    )
-                  }
+                  className={`p-2 transition-colors duration-300 ${
+                    theme === "light"
+                      ? "text-gray-600 hover:text-black"
+                      : "text-gray-400 hover:text-white"
+                  }`}
+                  onClick={() => setDropdownOpen(dropdownOpen === comment.id ? null : comment.id)}
                 >
                   <FiMoreVertical size={20} />
                 </button>
               </div>
 
               {dropdownOpen === comment.id && (
-                <div className="absolute top-10 right-2 bg-white border shadow-lg rounded-md w-40 z-50">
+                <div className={`absolute top-10 right-2 border shadow-lg rounded-md w-40 z-50 transition-colors duration-300 ${
+                  theme === "light"
+                    ? "bg-white border-gray-200"
+                    : "bg-gray-700 border-gray-600"
+                }`}>
                   <button
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                    className={`w-full text-left px-4 py-2 transition-colors duration-300 ${
+                      theme === "light"
+                        ? "hover:bg-gray-100"
+                        : "hover:bg-gray-600"
+                    }`}
                     onClick={() => openUpdateModal(comment)}
                   >
                     Update
                   </button>
                   <button
-                    className="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
+                    className={`w-full text-left px-4 py-2 text-red-500 transition-colors duration-300 ${
+                      theme === "light"
+                        ? "hover:bg-gray-100"
+                        : "hover:bg-gray-600"
+                    }`}
                     onClick={() => handleDeleteComment(comment.id)}
                   >
                     Delete
@@ -108,18 +130,24 @@ function CommentPage() {
               )}
 
               <h2 className="text-lg font-semibold">{comment.content}</h2>
-              <p className="text-sm text-gray-600">
+              <p className={`text-sm ${
+                theme === "light" ? "text-gray-600" : "text-gray-400"
+              }`}>
                 <span className="font-semibold">Created on:</span>{" "}
                 {comment.createdAt}
               </p>
-              <p className="text-sm text-gray-600">
+              <p className={`text-sm ${
+                theme === "light" ? "text-gray-600" : "text-gray-400"
+              }`}>
                 <span className="font-semibold">Commented on:</span>{" "}
                 {comment.BlogPost?.title || "Unknown Post"}
               </p>
             </div>
           ))
         ) : (
-          <p className="text-gray-500">
+          <p className={`${
+            theme === "light" ? "text-gray-500" : "text-gray-400"
+          }`}>
             You haven't commented on any posts yet.
           </p>
         )}
@@ -127,15 +155,23 @@ function CommentPage() {
 
       {updateModal && (
         <div
-          className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50"
+          className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50"
           onClick={() => setUpdateModal(false)}
         >
           <div
-            className="bg-white p-6 rounded-lg shadow-lg w-96 relative"
+            className={`p-6 rounded-lg shadow-lg w-96 relative transition-colors duration-300 ${
+              theme === "light"
+                ? "bg-white text-gray-900"
+                : "bg-gray-800 text-gray-100"
+            }`}
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              className="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl"
+              className={`absolute top-2 right-2 text-2xl transition-colors duration-300 ${
+                theme === "light"
+                  ? "text-gray-600 hover:text-black"
+                  : "text-gray-400 hover:text-white"
+              }`}
               onClick={() => setUpdateModal(false)}
             >
               <FiX />
@@ -148,13 +184,17 @@ function CommentPage() {
               <textarea
                 value={updateContent}
                 onChange={(e) => setUpdateContent(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md"
+                className={`w-full p-2 border rounded-md transition-colors duration-300 ${
+                  theme === "light"
+                    ? "bg-white border-gray-300 text-gray-900"
+                    : "bg-gray-700 border-gray-600 text-gray-100"
+                }`}
                 placeholder="Enter your updated comment..."
                 required
               ></textarea>
               <button
                 type="submit"
-                className="w-full bg-blue-500 text-white py-2 rounded-md"
+                className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors duration-300"
               >
                 Update Comment
               </button>

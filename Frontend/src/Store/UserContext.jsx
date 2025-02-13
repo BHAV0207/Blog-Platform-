@@ -12,6 +12,7 @@ export const UserProvider = ({ children }) => {
 
   const HandleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setUser(null);
     return true;
   };

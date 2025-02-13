@@ -7,7 +7,7 @@ import CommentModal from "./CommentModal";
 function FeedPage() {
   const { allPosts, getAllPosts } = useContext(UserContext);
   const [activePostId, setActivePostId] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); // ✅ Search query state
+  const [searchQuery, setSearchQuery] = useState("");
   const [filteredPosts, setFilteredPosts] = useState([]);
 
   useEffect(() => {
@@ -18,68 +18,76 @@ function FeedPage() {
     setFilteredPosts(allPosts);
   }, [allPosts]);
 
-  // ✅ Debounced Filtering using useEffect
   useEffect(() => {
     const delaySearch = setTimeout(() => {
       if (!searchQuery.trim()) {
-        setFilteredPosts(allPosts); // Reset to all posts if query is empty
+        setFilteredPosts(allPosts);
       } else {
         const filtered = allPosts.filter((post) =>
           post.title.toLowerCase().includes(searchQuery.toLowerCase())
         );
         setFilteredPosts(filtered);
       }
-    }, 300); // ✅ Wait 300ms before filtering
+    }, 300);
 
-    return () => clearTimeout(delaySearch); // ✅ Cleanup previous timeout
-  }, [searchQuery, allPosts]); // Runs when searchQuery or allPosts change
+    return () => clearTimeout(delaySearch);
+  }, [searchQuery, allPosts]);
 
   return (
-    <div className="max-w-5xl mx-auto">
-      <h2 className="text-3xl font-bold text-center mb-6">Feed</h2>
-
-      {/* ✅ Search Bar */}
-      <div className="relative mb-6 flex items-center">
-        <FiSearch className="absolute left-3 text-gray-500" size={20} />
-        <input
-          type="text"
-          className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
-          placeholder="Search posts..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+    <div className="max-w-7xl mx-auto px-6 py-8">
+      {/* Header Section with Search Bar */}
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-4xl font-bold text-gray-900">Feed</h2>
+        <div className="relative w-1/3">
+          <FiSearch
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+            size={20}
+          />
+          <input
+            type="text"
+            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 shadow-md"
+            placeholder="Search posts..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
       </div>
 
-      {/* ✅ Display Posts */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Posts Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredPosts.length > 0 ? (
           filteredPosts.map((post) => (
             <div
-              className="bg-white rounded-lg shadow-md p-4 relative"
+              className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105"
               key={post.id}
             >
               <img
-                src={post.imageUrls[0] || "https://via.placeholder.com/300"}
+                src={post.imageUrls[0] || "https://via.placeholder.com/400"}
                 alt={post.title}
-                className="w-full h-48 object-cover rounded-t-lg"
+                className="w-full h-56 object-cover"
               />
-              <h3 className="text-xl font-semibold mt-2">{post.title}</h3>
-              <p className="text-gray-600 mt-1">
-                {post.content.substring(0, 100)}...
-              </p>
-              <Link
-                to={`/article/${post.id}`}
-                className="text-blue-600 mt-2 inline-block"
-              >
-                Read More
-              </Link>
-
-              <button
-                className="absolute bottom-3 right-3 text-gray-600 hover:text-black p-2"
-                onClick={() => setActivePostId(post.id)}
-              >
-                <FiMessageSquare size={22} />
-              </button>
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {post.title}
+                </h3>
+                <p className="text-gray-600 text-sm mt-1">
+                  {post.content.substring(0, 100)}...
+                </p>
+                <div className="mt-3 flex justify-between items-center">
+                  <Link
+                    to={`/article/${post.id}`}
+                    className="text-blue-600 hover:underline"
+                  >
+                    Read More
+                  </Link>
+                  <button
+                    className="text-gray-600 hover:text-black"
+                    onClick={() => setActivePostId(post.id)}
+                  >
+                    <FiMessageSquare size={22} />
+                  </button>
+                </div>
+              </div>
 
               {activePostId === post.id && (
                 <CommentModal
