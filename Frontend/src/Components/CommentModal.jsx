@@ -3,9 +3,9 @@ import { UserContext } from "../Store/UserContext";
 import { FiSend, FiX, FiTrash2 } from "react-icons/fi"; // ✅ Import Delete Icon
 import { ThemeContext } from "../Store/ThemeContext";
 
-
 function CommentModal({ postId, closeModal }) {
-  const { postCommentOnAPost, fetchCommentsForPost, deleteComment, user } = useContext(UserContext);
+  const { postCommentOnAPost, fetchCommentsForPost, deleteComment, user } =
+    useContext(UserContext);
   const { theme } = useContext(ThemeContext);
   const [commentContent, setCommentContent] = useState("");
   const [localComments, setLocalComments] = useState([]);
@@ -50,12 +50,14 @@ function CommentModal({ postId, closeModal }) {
 
   const handleDelete = async (commentId) => {
     await deleteComment(commentId);
-    setLocalComments((prev) => prev.filter((comment) => comment.id !== commentId));
+    setLocalComments((prev) =>
+      prev.filter((comment) => comment.id !== commentId)
+    );
   };
 
   return (
     <div
-      className="fixed inset-0  bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50"
+      className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50"
       onClick={closeModal}
     >
       <div
@@ -85,28 +87,29 @@ function CommentModal({ postId, closeModal }) {
               <div
                 key={comment.id}
                 className={`p-3 rounded-md relative transition-colors duration-300 ${
-                  theme === "light"
-                    ? "bg-gray-100"
-                    : "bg-gray-700"
+                  theme === "light" ? "bg-gray-100" : "bg-gray-700"
                 }`}
               >
                 <div className="flex justify-between items-center">
-                  <p className="font-semibold">
-                    {comment.User?.name}
-                  </p>
-                  <p className={`text-xs ${
-                    theme === "light" ? "text-gray-500" : "text-gray-400"
-                  }`}>
+                  <p className="font-semibold">{comment.User?.name}</p>
+                  <p
+                    className={`text-xs ${
+                      theme === "light" ? "text-gray-500" : "text-gray-400"
+                    }`}
+                  >
                     {comment.createdAt}
                   </p>
                 </div>
-                <p className={theme === "light" ? "text-gray-700" : "text-gray-300"}>
+                <p
+                  className={
+                    theme === "light" ? "text-gray-700" : "text-gray-300"
+                  }
+                >
                   {comment.content}
                 </p>
-
                 {comment.userId === user.id && (
                   <button
-                    className="absolute top-2 right-8 text-red-500 hover:text-red-700"
+                    className="absolute top-2 right-2 text-red-500 hover:text-red-700 p-1 rounded-full bg-white dark:bg-gray-900 shadow-md"
                     onClick={() => handleDelete(comment.id)}
                   >
                     <FiTrash2 size={16} />
@@ -115,7 +118,9 @@ function CommentModal({ postId, closeModal }) {
               </div>
             ))
           ) : (
-            <p className={theme === "light" ? "text-gray-500" : "text-gray-400"}>
+            <p
+              className={theme === "light" ? "text-gray-500" : "text-gray-400"}
+            >
               No comments yet. Be the first to comment!
             </p>
           )}
